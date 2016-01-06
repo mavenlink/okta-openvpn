@@ -47,9 +47,9 @@ log.addHandler(syslog)
 # errlog.setFormatter(logging.Formatter(syslog_fmt))
 # log.addHandler(errlog)
 # # Uncomment to enable logging to a file
-# filelog = logging.FileHandler('/tmp/okta_openvpn.log')
-# filelog.setFormatter(logging.Formatter(syslog_fmt))
-# log.addHandler(filelog)
+filelog = logging.FileHandler('/var/log/okta_openvpn.log')
+filelog.setFormatter(logging.Formatter(syslog_fmt))
+log.addHandler(filelog)
 
 
 class PinError(Exception):
@@ -232,7 +232,7 @@ class OktaAPIAuth:
 class OktaOpenVPNValidator:
     def __init__(self):
         self.cls = OktaAPIAuth
-        self.username_trusted = False
+        self.username_trusted = True
         self.user_valid = False
         self.control_file = None
         self.site_config = {}
@@ -287,7 +287,7 @@ class OktaOpenVPNValidator:
             log.critical('OKTA_TOKEN not defined in configuration')
             return False
         # Taken from a validated VPN client-side SSL certificate
-        username = self.env.get('common_name')
+        username = self.env.get('username')
         password = self.env.get('password')
         client_ipaddr = self.env.get('untrusted_ip', '0.0.0.0')
         # Note:
