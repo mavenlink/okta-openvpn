@@ -267,12 +267,19 @@ class OktaOpenVPNValidator:
                         'okta_url': cfg.get('OktaAPI', 'Url'),
                         'okta_token': cfg.get('OktaAPI', 'Token'),
                         }
+
                     always_trust_username = cfg.get(
                         'OktaAPI',
-                        'AllowUntrustedUsers',
-                        'UsernameAsCommonName')
+                        'AllowUntrustedUsers')
                     if always_trust_username == 'True':
                         self.always_trust_username = True
+
+                    username_as_common_name = cfg.get(
+                        'OktaAPI',
+                        'UsernameAsCommonName')
+                    if username_as_common_name == 'True':
+                        self.username_as_common_name = True
+
                     self.username_suffix = cfg.get('OktaAPI', 'UsernameSuffix')
                     return True
                 except MissingSectionHeaderError, e:
