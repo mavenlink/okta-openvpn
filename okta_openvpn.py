@@ -292,7 +292,7 @@ class OktaOpenVPNValidator:
         # Taken from a validated VPN client-side SSL certificate
         if self.username_as_common_name:
           username = self.env.get('username')
-        else
+        else:
           username = self.env.get('common_name')
 
         password = self.env.get('password')
