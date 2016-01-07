@@ -241,6 +241,7 @@ class OktaOpenVPNValidator:
         self.okta_config = {}
         self.username_suffix = None
         self.always_trust_username = False
+        self.username_as_common_name = False
 
     def read_configuration_file(self):
         cfg_path_defaults = [
@@ -250,6 +251,7 @@ class OktaOpenVPNValidator:
         cfg_path = cfg_path_defaults
         parser_defaults = {
             'AllowUntrustedUsers': self.always_trust_username,
+            'UsernameAsCommonName': self.username_as_common_name,
             'UsernameSuffix': self.username_suffix,
             }
         if self.config_file:
@@ -267,7 +269,8 @@ class OktaOpenVPNValidator:
                         }
                     always_trust_username = cfg.get(
                         'OktaAPI',
-                        'AllowUntrustedUsers')
+                        'AllowUntrustedUsers',
+                        'UsernameAsCommonName')
                     if always_trust_username == 'True':
                         self.always_trust_username = True
                     self.username_suffix = cfg.get('OktaAPI', 'UsernameSuffix')
@@ -287,7 +290,11 @@ class OktaOpenVPNValidator:
             log.critical('OKTA_TOKEN not defined in configuration')
             return False
         # Taken from a validated VPN client-side SSL certificate
-        username = self.env.get('username')
+        if self.username_as_common_name:
+          username = self.env.get('username')
+        else
+          username = self.env.get('common_name')
+
         password = self.env.get('password')
         client_ipaddr = self.env.get('untrusted_ip', '0.0.0.0')
         # Note:
