@@ -18,3 +18,5 @@ Token:
 ## NOT RECCOMMENDED FOR PRODUCTION ENVIRONMENTS
 ## (Example below)
 # AllowUntrustedUsers: True
+# To configure the plugin to support other second factors (such as Yubico), configure an MfaSeparatorCharacter
+# MfaSeparatorCharacter: -
